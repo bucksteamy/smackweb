@@ -2,3 +2,4 @@
 !*.go
 !Dockerfile
 !*.md
+!brigade.js
