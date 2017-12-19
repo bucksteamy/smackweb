@@ -127,14 +127,13 @@ function helmJobRunner (config, h, prodWeight, canaryWeight, deployType) {
     h.tasks = [
         "cd /src/",
         "apk update",
-        "apk add ca-certificates",
-        "update-ca-certificates",
-        `wget "https://njechartrepo.blob.core.windows.net/charts/smackweb?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-12-18T23:33:28Z&st=2017-12-18T15:33:28Z&spr=https&sig=Qv1DNVEWXeQbV%2FoJKor5IPogjMlm0uDum9%2BCpKfO%2FVM%3D" -O smackapi.tar.gz`,
-        `wget "https://njechartrepo.blob.core.windows.net/charts/routes?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-12-18T23:33:28Z&st=2017-12-18T15:33:28Z&spr=https&sig=Qv1DNVEWXeQbV%2FoJKor5IPogjMlm0uDum9%2BCpKfO%2FVM%3D" -O routes.tar.gz`,
+        "apk add openssl",
+        `wget "https://njechartrepo.blob.core.windows.net/charts/smackweb?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2018-12-19T07:50:14Z&st=2017-12-18T23:50:14Z&spr=https&sig=dGebtmipnMBCZk5vau4hw4rwkz7Nd%2FsZoXJhxD6AAGs%3D" -O smackweb.tar.gz`,
+        `wget "https://njechartrepo.blob.core.windows.net/charts/routes?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2018-12-19T07:50:14Z&st=2017-12-18T23:50:14Z&spr=https&sig=dGebtmipnMBCZk5vau4hw4rwkz7Nd%2FsZoXJhxD6AAGs%3D" -O routes.tar.gz`,
+        "tar -xzf smackweb.tar.gz",        
         "tar -xzf routes.tar.gz",
-        "tar -xzf smackweb.tar.gz",
-        `helm upgrade --install smackweb-${deployType} ./smackweb --namespace microsmack --set web.image=${config.get("apiACRImage")} --set web.imageTag=${config.get("imageTag")} --set web.deployment=smackweb-${deployType} --set web.versionLabel=${deployType}`,
-        `helm upgrade --install microsmack-routes ./routes --namespace microsmack --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight}`
+        `helm upgrade --install smackweb-${deployType} ./smackweb --namespace draftdemo --set web.image=${config.get("apiACRImage")} --set web.imageTag=${config.get("imageTag")} --set web.deployment=smackweb-${deployType} --set web.versionLabel=${deployType}`,
+        `helm upgrade --install microsmack-routes ./routes --namespace draftdemo --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight}`
     ]
 }
 
