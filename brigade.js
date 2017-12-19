@@ -8,7 +8,8 @@ events.on("push", (brigadeEvent, project) => {
     brigConfig.set("acrServer", project.secrets.acrServer)
     brigConfig.set("acrUsername", project.secrets.acrUsername)
     brigConfig.set("acrPassword", project.secrets.acrPassword)
-    brigConfig.set("apiImage", "bucksteamy/smackapi")
+    brigConfig.set("apiImage", "bucksteamy/smackweb")
+    brigConfig.set("serviceLabel", "smackapi")        
     brigConfig.set("gitSHA", brigadeEvent.commit.substr(0,7))
     brigConfig.set("eventType", brigadeEvent.type)
     brigConfig.set("branch", getBranch(gitPayload))
@@ -49,7 +50,7 @@ events.on("pull_request", (brigadeEvent, project) => {
     brigConfig.set("acrServer", project.secrets.acrServer)
     brigConfig.set("acrUsername", project.secrets.acrUsername)
     brigConfig.set("acrPassword", project.secrets.acrPassword)
-    brigConfig.set("apiImage", "bucksteamy/smackapi")
+    brigConfig.set("apiImage", "bucksteamy/smackweb")
     brigConfig.set("gitSHA", brigadeEvent.commit.substr(0,7))
     brigConfig.set("eventType", brigadeEvent.type)
     brigConfig.set("branch", getBranch(gitPayload))
@@ -133,7 +134,7 @@ function helmJobRunner (config, h, prodWeight, canaryWeight, deployType) {
         "tar -xzf smackweb.tar.gz",        
         "tar -xzf routes.tar.gz",
         `helm upgrade --install smackweb-${deployType} ./smackweb --namespace draftdemo --set web.image=${config.get("apiACRImage")} --set web.imageTag=${config.get("imageTag")} --set web.deployment=smackweb-${deployType} --set web.versionLabel=${deployType}`,
-        `helm upgrade --install microsmack-routes ./routes --namespace draftdemo --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight}`
+        `helm upgrade --install microsmack-routes ./routes --namespace draftdemo --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight} --set serviceLabel=${config.get("serviceLabel")}`
     ]
 }
 
