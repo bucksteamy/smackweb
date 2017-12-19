@@ -49,7 +49,7 @@ events.on("pull_request", (brigadeEvent, project) => {
     brigConfig.set("acrServer", project.secrets.acrServer)
     brigConfig.set("acrUsername", project.secrets.acrUsername)
     brigConfig.set("acrPassword", project.secrets.acrPassword)
-    brigConfig.set("apiImage", "chzbrgr71/smackapi")
+    brigConfig.set("apiImage", "bucksteamy/smackapi")
     brigConfig.set("gitSHA", brigadeEvent.commit.substr(0,7))
     brigConfig.set("eventType", brigadeEvent.type)
     brigConfig.set("branch", getBranch(gitPayload))
@@ -114,8 +114,6 @@ function dockerJobRunner(config, d) {
         "echo waiting && sleep 20",
         "cd /src/",
         `docker login ${config.get("acrServer")} -u ${config.get("acrUsername")} -p ${config.get("acrPassword")}`,
-        "go get github.com/gorilla/mux",
-        "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o smackweb",
         `docker build --build-arg BUILD_DATE='1/1/2017 5:00' --build-arg IMAGE_TAG_REF=${config.get("imageTag")} --build-arg VCS_REF=${config.get("gitSHA")} -t ${config.get("apiImage")} .`,
         `docker tag ${config.get("apiImage")} ${config.get("apiACRImage")}:${config.get("imageTag")}`,
         `docker push ${config.get("apiACRImage")}:${config.get("imageTag")}`,
@@ -128,6 +126,9 @@ function helmJobRunner (config, h, prodWeight, canaryWeight, deployType) {
     h.image = "lachlanevenson/k8s-helm:2.7.0"
     h.tasks = [
         "cd /src/",
+        "apk update",
+        "apk add ca-certificates",
+        "update-ca-certificates",
         `wget "https://njechartrepo.blob.core.windows.net/charts/smackweb?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-12-18T23:33:28Z&st=2017-12-18T15:33:28Z&spr=https&sig=Qv1DNVEWXeQbV%2FoJKor5IPogjMlm0uDum9%2BCpKfO%2FVM%3D" -O smackapi.tar.gz`,
         `wget "https://njechartrepo.blob.core.windows.net/charts/routes?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-12-18T23:33:28Z&st=2017-12-18T15:33:28Z&spr=https&sig=Qv1DNVEWXeQbV%2FoJKor5IPogjMlm0uDum9%2BCpKfO%2FVM%3D" -O routes.tar.gz`,
         "tar -xzf routes.tar.gz",
