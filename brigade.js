@@ -134,7 +134,7 @@ function helmJobRunner (config, h, prodWeight, canaryWeight, deployType) {
         "tar -xzf smackweb.tar.gz",        
         "tar -xzf routes.tar.gz",
         `helm upgrade --install smackweb-${deployType} ./smackweb --namespace draftdemo --set web.image=${config.get("apiACRImage")} --set web.imageTag=${config.get("imageTag")} --set web.deployment=smackweb-${deployType} --set web.versionLabel=${deployType}`,
-        `helm upgrade --install microsmack-routes ./routes --namespace draftdemo --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight} --set serviceLabel=${serviceLabel}`
+        `helm upgrade --install microsmack-routes ./routes --namespace draftdemo --set prodLabel=prod --set prodWeight=${prodWeight} --set canaryLabel=new --set canaryWeight=${canaryWeight} --set serviceLabel=${config.get("serviceLabel")}`
     ]
 }
 
