@@ -138,7 +138,7 @@ function helmJobRunner (config, h, prodWeight, canaryWeight, deployType) {
 function slackJob (s, webhook, message) {
     s.storage.enabled = false
     s.env = {
-      SLACK_WEBHOOK: proj.secrets.slackWebhook,
+      SLACK_WEBHOOK: webhook,
       SLACK_USERNAME: "Smackweb Brigade Notifier",
       SLACK_MESSAGE: message,
       SLACK_COLOR: "#0000ff"
