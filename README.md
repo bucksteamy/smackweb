@@ -1,3 +1,3 @@
 # smackweb
 
-Brigade Demo again
+Brigade Demo
