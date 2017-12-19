@@ -85,7 +85,7 @@ events.on("after", (event, proj) => {
     slack.storage.enabled = false
     slack.env = {
       SLACK_WEBHOOK: proj.secrets.slackWebhook,
-      SLACK_USERNAME: "brigade @ kubecon",
+      SLACK_USERNAME: "Smackweb Brigade Notifier",
       SLACK_MESSAGE: "brigade pipeline finished successfully",
       SLACK_COLOR: "#ff0000"
     }
@@ -139,7 +139,7 @@ function slackJob (s, webhook, message) {
     s.storage.enabled = false
     s.env = {
       SLACK_WEBHOOK: webhook,
-      SLACK_USERNAME: "brigade @ kubecon",
+      SLACK_USERNAME: "Smackweb Brigade Notifier",
       SLACK_MESSAGE: message,
       SLACK_COLOR: "#0000ff"
     }
