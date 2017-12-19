@@ -114,8 +114,6 @@ function dockerJobRunner(config, d) {
         "echo waiting && sleep 20",
         "cd /src/smackweb/",
         `docker login ${config.get("acrServer")} -u ${config.get("acrUsername")} -p ${config.get("acrPassword")}`,
-        "go get github.com/gorilla/mux",
-        "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o smackweb",
         `docker build --build-arg BUILD_DATE='1/1/2017 5:00' --build-arg IMAGE_TAG_REF=${config.get("imageTag")} --build-arg VCS_REF=${config.get("gitSHA")} -t ${config.get("apiImage")} .`,
         `docker tag ${config.get("webImage")} ${config.get("webACRImage")}:${config.get("imageTag")}`,
         `docker push ${config.get("webACRImage")}:${config.get("imageTag")}`,
