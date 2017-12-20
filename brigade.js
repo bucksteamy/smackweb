@@ -50,7 +50,6 @@ events.on("pull_request", (brigadeEvent, project) => {
     brigConfig.set("acrUsername", project.secrets.acrUsername)
     brigConfig.set("acrPassword", project.secrets.acrPassword)
     brigConfig.set("apiImage", "bucksteamy/smackweb")
-    brigConfig.set("serviceLabel", "smackweb")            
     brigConfig.set("gitSHA", brigadeEvent.commit.substr(0,7))
     brigConfig.set("eventType", brigadeEvent.type)
     brigConfig.set("branch", getBranch(gitPayload))
@@ -101,7 +100,7 @@ function goJobRunner(g) {
     g.tasks = [
         "cd /src/",
         "go get github.com/gorilla/mux",
-        "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o smackweb",
+        "go build -o smackweb .",
         "go test -v"
     ]
 }
