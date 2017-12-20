@@ -6,7 +6,7 @@ WORKDIR /app
 
 ARG VCS_REF
 ARG BUILD_DATE
-ARG VERSION
+ARG IMAGE_TAG_REF
 
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
@@ -21,6 +21,8 @@ ENV GIT_SHA $VCS_REF
 ENV APP_VERSION $VERSION
 ENV IMAGE_BUILD_DATE $BUILD_DATE
 
-RUN go build -o smackweb .
-ENTRYPOINT /app/smackweb
-EXPOSE 8080
+RUN go build -o smackapi .
+ENTRYPOINT /app/smackapi
+EXPOSE 8081
+
+
