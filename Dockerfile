@@ -1,12 +1,8 @@
-FROM golang:1.7.5 as builder
-WORKDIR /go/src/github.com/bucksteamy/smackweb/
-COPY . .
+FROM golang:1.7.5 
 RUN go get github.com/gorilla/mux
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o smackweb .
-
-FROM alpine
+RUN mkdir /app
+ADD . /app/
 WORKDIR /app
-COPY --from=builder /go/src/github.com/bucksteamy/smackweb/ .
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -25,5 +21,6 @@ ENV GIT_SHA $VCS_REF
 ENV APP_VERSION $VERSION
 ENV IMAGE_BUILD_DATE $BUILD_DATE
 
+RUN go build -o smackweb .
 ENTRYPOINT /app/smackweb
 EXPOSE 8080
